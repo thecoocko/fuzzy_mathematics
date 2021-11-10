@@ -1,12 +1,12 @@
 import numpy as np
 import copy as c
 
-n = 3#int(input("SIZE: "))
-r_1 = [[1,0.5,0.3],[0,1,0.8],[1,0.5,1]]#[[1,0.3,0.8,0.5,1],[0.6,1,0.7,0.3,0.7],[0.6,1,0.7,0.3,0.7],[0.6,0,1,0.9,0.1],[0.3,1,0.6,1,0.4],[0.2,0,0.1,0.1,1]]#[[float(input(f"R1[{i}][{j}]: ")) for i in range(n)]  for j in range(n)]
-r_2 = [[1,0.1,0],[0.3,1,1],[1,0.5,1]]#[[1,0,1,0,0.6],[1,1,0.9,0.4,1],[0,0.7,1,0,0.7],[0.5,0.3,0,1,0.7],[1,0.9,0.8,0.3,1]]#[[float(input(f"R2[{i}][{j}]: ")) for i in range(n)]  for j in range(n)]
+n = int(input("SIZE: "))
+r_1 = [[float(input(f"R1[{i}][{j}]: ")) for i in range(n)]  for j in range(n)]
+r_2 = [[float(input(f"R2[{i}][{j}]: ")) for i in range(n)]  for j in range(n)]
 
-lambda1 = 0.33#float(input(f"lambda1: "))
-lambda2 = 0.67#float(input(f"lambda2: "))
+lambda1 = float(input(f"lambda1: "))
+lambda2 = float(input(f"lambda2: "))
 
 def intersectionOfInitialRelations(r1,r2):
     r1 = c.deepcopy(r_1)
@@ -18,7 +18,7 @@ def intersectionOfInitialRelations(r1,r2):
             r2[i][j] = round(lambda2*r2[i][j],3)
     for i in range(n):
         for j in range(n):
-            intersection[i][j] = round(float(min(r1[i][j],r2[i][j])),3)#norm
+            intersection[i][j] = round(float(min(r1[i][j],r2[i][j])),3)
     return intersection           
 
 def additiveConvolutionOfRelations(r1,r2):
@@ -71,8 +71,9 @@ def main():
     print(f"Q1 Strict: {strictRelQ1(intersectionOfInitialRelations(r_1,r_2))}")
     print(f"Q2 Strict: {strictRelQ2(additiveConvolutionOfRelations(r_1,r_2))}")
     print(f"Non dominated alt1: {nonDomAltQ1(strictRelQ1(intersectionOfInitialRelations(r_1,r_2)))}")
-    print(f"Non dominated alt1: {nonDomAltQ2(strictRelQ2(additiveConvolutionOfRelations(r_1,r_2)))}")
+    print(f"Non dominated alt2: {nonDomAltQ2(strictRelQ2(additiveConvolutionOfRelations(r_1,r_2)))}")
     print(f"The original set of non-dominant alternatives: {sourceSet(nonDomAltQ1(strictRelQ1(intersectionOfInitialRelations(r_1,r_2))),nonDomAltQ2(strictRelQ2(additiveConvolutionOfRelations(r_1,r_2))))}")
+    print(f"Rational choice: {np.max(sourceSet(nonDomAltQ1(strictRelQ1(intersectionOfInitialRelations(r_1,r_2))),nonDomAltQ2(strictRelQ2(additiveConvolutionOfRelations(r_1,r_2)))))}")
 
 if __name__=="__main__":
     main()
