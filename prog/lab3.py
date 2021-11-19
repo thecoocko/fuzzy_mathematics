@@ -54,45 +54,21 @@ def AsymmetricAndAntisymmetricRel(r,n):
     else:
         return f'Neither asymmetric nor antisymmetric relation'
 
-def maxMinCompositionForR(r):
-    z = []
-    for i in r:
-        for j in r.T:
-            z.append(max(np.minimum(i, j)))
-    return np.array(z).reshape((r.shape[0], r.shape[1]))
-
-def minMaxCompositionForR(r):
-    z = []
-    for i in r:
-        for j in r.T:
-            z.append(min(np.maximum(i, j)))
-    return np.array(z).reshape((r.shape[0], r.shape[1]))
-
-def maxMultCompositionForR(r):
-    z = []
-    for i in r:
-        for j in r.T:
-            z.append(max(np.multiply(i, j)))
-    return np.array(z).reshape((r.shape[0], r.shape[1]))
 
 
 def TransitiveRel(r,n):
-    r_arr = (copy.deepcopy(r)).tolist()
-    maxmin = maxMinCompositionForR(r_arr)
-    minmax = minMaxCompositionForR(r_arr)
-    maxmult = maxMultCompositionForR(r_arr)
+    maxmin = maxMinComposition(r,r)
+    minmax = minMaxComposition(r,r)
+    maxmult = maxMultComposition(r,r)
     
     for i in range(n):
         for j in range(n):
-            if maxmin[i][j]<=r_arr[i][j]:
+            if maxmin[i][j]<=r[i][j]:
                 return f"Transitive rel (maxmin)"
-            elif minmax[i][j]<=r_arr[i][j]:
+            elif minmax[i][j]<=r[i][j]:
                 return f"Transitive rel (minmax)"
-            elif maxmult[i][j]<=r_arr[i][j]:
+            elif maxmult[i][j]<=r[i][j]:
                 return f"Transitive rel (maxmult)"
-
-
-    
 
 def fuzzyUnion(r1,r2,n):
     z = []
@@ -167,14 +143,26 @@ def maxMultComposition(r1,r2):
     return np.array(z).reshape((r1.shape[0], r2.shape[1]))
 
 def main():
+
     r1 = np.array([[1,0.3,0.8,0.5,1],[0.6,1,0.7,0.3,0.7],[0.6,0,1,0.9,0.1],[0.3,1,0.6,1,0.4],[0.2,0,0.1,0.1,1]])
     r2 =  np.array([[1,0,1,0,0.6],[1,1,0.9,0.4,1],[0,0.7,1,0,0.7],[0.3,0.3,0,1,0.7],[1,0.9,0.8,0.3,1]])
     n = len(r1)
+
     print(f"maxmin: {maxMinComposition(r1,r2)}")
     print(f"minmax: {minMaxComposition(r1,r2)}")
     print(f"maxmult: {maxMultComposition(r1,r2)}")
     print(f"fuzzyUnion: {fuzzyUnion(r1,r2,n)}")
     print(f"fuzzyIntersec: {fuzzyIntersec(r1,r2,n)}")
+    print(f"fuzzyComplement: {fuzzyComplement(r1,r2,n)}")
+    print(f"fuzzyDifference: {fuzzyDifference(r1,r2,n)}")
+    print(f"R1 {ReflexiveAndAntireflexiveRel(r1,n)}")
+    print(f"R1 {SymmetricRel(r1,n)}")
+    print(f"R1 {AsymmetricAndAntisymmetricRel(r1,n)}")
+    print(f"R1 {TransitiveRel(r1,n)}")
+    print(f"R2 {ReflexiveAndAntireflexiveRel(r2,n)}")
+    print(f"R2 {SymmetricRel(r2,n)}")
+    print(f"R2 {AsymmetricAndAntisymmetricRel(r2,n)}")
+    print(f"R2 {TransitiveRel(r2,n)}")
 
 
 
